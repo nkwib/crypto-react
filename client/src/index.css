@@ -1,0 +1,27 @@
+body {
+  margin: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: 'Red Hat Display';
+}
+
+
+* {
+  font-family: 'Red Hat Display';
+  font-size: 14px;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+@font-face {
+  font-family: "Red Hat Display";
+  src: local("Red Hat Display"), local("RedHatDisplay-Regular"),
+    url('./fonts/red-hat-display/RedHatDisplay-VariableFont_wght.ttf')
+      format("truetype");
+  }

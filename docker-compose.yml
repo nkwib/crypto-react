@@ -1,0 +1,51 @@
+version: '3.8'
+
+x-common-variables: &common-variables
+  MONGO_DATABASE: coins
+  MONGO_USER: MONGO_USER
+  MONGO_PASSWORD: MONGO_PASSWORD
+
+services:
+  mongo_db:
+    image: mongo
+    container_name: mongodb
+    environment:
+      <<: *common-variables
+    volumes:
+      - ./data/mongo:/data/db
+    ports:
+      - 27017:27017
+    restart: unless-stopped
+
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: "./server"
+    depends_on:
+      - mongo_db
+    volumes:
+      - /app/node_modules
+      - ./server:/app
+    environment:
+      <<: *common-variables
+      
+  nginx:
+    depends_on:
+      - api
+      - client
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    ports:
+      - "3050:80"
+
+  client:
+    build:
+      dockerfile: Dockerfile
+      context: ./client
+    volumes:
+      - /app/node_modules
+      - ./client:/app
+    ports:
+      - 4001:3000

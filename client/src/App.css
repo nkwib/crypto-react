@@ -1,0 +1,8 @@
+.App-header {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  max-width: 900px;
+}

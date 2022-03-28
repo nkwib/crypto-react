@@ -1,0 +1,81 @@
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-size: 12px;
+}
+
+thead {
+  font-weight: bold;
+  background: #EEE;
+}
+
+td {
+  border-bottom: 1px solid #EEE;
+  padding: 8px;
+}
+
+th {
+  text-align: left;
+  padding: 8px;
+  cursor: pointer;
+}
+
+tr:nth-child(even) {
+  background: #EEE;
+}
+
+.exchanged {
+  color: #6368DF;
+  font-weight: 700;
+}
+
+.live-price {
+  color: #5DBE7E;
+  font-weight: 700;
+}
+
+.sorting {
+  display: inline;
+  height: 8px;
+  margin-right: 8px;
+  transition: rotateX(0deg);
+  transition: all .2s ease-in-out;
+}
+
+.sorting.desc {
+  transform: rotateX(180deg);
+  transition: all .2s ease-in-out;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.pagination .placeholder, .pagination .page-btn {
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 8px;
+  background: #FFF;
+  animation: fadeIn .2s ease-in-out;
+}
+.pagination .page-btn:hover {
+  background: #E8F1F1;
+  color: #000;
+}
+
+.pagination .placeholder:first-child, .pagination .page-btn:first-child {
+  width: 100px;
+}
+.pagination .placeholder:last-child, .pagination .page-btn:last-child {
+  width: 100px;
+}
+
+.pagination .pressed {
+  background: #000000;
+  color: #FFF;
+}

@@ -1,0 +1,30 @@
+.group input, .group select {
+  border: 1px solid #ccc;
+  background: #fff;
+  border-radius: 5px;
+  padding: 0 0.5em;
+  height: 42px;
+}
+
+.group input {
+  height: 40px;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 8px;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+}
+
+.group label {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  color: #9c9c9c;
+  margin-bottom: 0.5em;
+}
