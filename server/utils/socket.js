@@ -10,13 +10,8 @@ let config =  {
 
 export default {
 	init(socket) {
-		console.log('Connected')
+		console.log('Socket initialized');
 		client = new Server(socket, config);
-		socket.emit('message', {type: 'REQUEST_AUTHORIZE'});
-		// socket.on("connection", (socket) => {
-		// 	console.log('Connected')
-		// 	console.log("User connected");
-		// });
 	},
 	emit(msg, data) {
 		client.emit(msg, data)

@@ -1,46 +1,40 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import Exchange from './components/Exchange';
 import DataTable from './components/DataTable';
+import DatePicker from 'sassy-datepicker';
+import { formatDate } from './utils';
+
+const BACKEND_URL = 'http://localhost:3001';
 
 function App() {
-  const [coins, setCoins] = useState({
-    Bitcoin: 50000,
-    Ethereum: 3000,
-    Litecoin: 50,
-    Ripple: 0.1,
-    Cardano: 0.1,
-    Monero: 0.1,
-    Dash: 0.1,
-    NEO: 0.1,
-    EOS: 0.1,
-  });
+  // for the date picker
+  const weekago = new Date() - 1000 * 60 * 60 * 24 * 7;
+  const [startDate, setStartDate] = useState(new Date(weekago));
+  const [showStartPicker, setShowStartPicker] = useState(false);
+  const [endDate, setEndDate] = useState(new Date());
+  const [showEndPicker, setShowEndPicker] = useState(false);
+
+  // for the rates of conversion
+  const [coins, setCoins] = useState({});
   const [err, setErr] = useState(false);
 
-  const fetchCoins = () => {
-    fetch('http://localhost:3001')
-      .then(res => res.json())
-      .then(data => {
-        console.log(data)
-        if (data.length > 0) {
-          setErr(false);
-          setCoins(data)
-        } else {
-          setErr('No coins found')
-        }
-      })
-      .catch(err => setErr('Impossible To fetch data') && console.log(err));
-  }
+  useEffect(() => {
+    // fetch data from backend
+    fetchLatestRates();
+  }, []);
+
+  const fetchLatestRates = async () => {
+    const response = await fetch(`${BACKEND_URL}/latest_rates`);
+    const data = await response.json();
+    setCoins(data);
+  };
 
   const onSave = (crypto, amountCrypto, currency, amountCurrency) => {
     console.log('onSave');
-    console.log(crypto, amountCrypto, currency, amountCurrency);
-    // post transaction
-    fetch('http://localhost:3001/transaction', {
+    fetch(`${BACKEND_URL}/transaction`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         crypto,
         amountCrypto,
@@ -52,16 +46,27 @@ function App() {
     })
   }
 
+  // on date picker change
+  const onChange = (newDate, start) => {
+    start ? setStartDate(newDate) : setEndDate(newDate);
+    start ? setShowStartPicker(false) : setShowEndPicker(false);
+  };
+
   return (
     <div className="App">
       <header className="App-header">
-        <Exchange coins={coins} fetchCoins={fetchCoins} onSave={onSave} err={err}/>
-        <DataTable err={err} itemsPerPage={5}/>
-        {/* <button onClick={fetchCoins}>
-          AGGIORNA
-        </button>
-        {!err && Object.keys(coins).map(coin => <div key={coin}>{coin} - ${coins[coin]}</div>)}
-        {err && <div>{err}</div>} */}
+        <Exchange coins={coins} onSave={onSave} err={err} />
+
+        
+        <div className="date-picker">
+          <div onClick={() => setShowStartPicker(true)}>Start: {formatDate(startDate, false)}</div>
+          <div onClick={() => setShowEndPicker(true)}>End: {formatDate(endDate, false)}</div>
+        </div>
+        {/* CHECK IF DATEPICKER AND WHICH IS SHOWN */}
+        {showStartPicker && <DatePicker onChange={(e) => onChange(e, true)} selected={startDate} className={'hoverAbs'} />}
+        {showEndPicker && <DatePicker onChange={(e) => onChange(e, false)} selected={endDate} className={'hoverAbs'} />}
+
+        <DataTable err={err} itemsPerPage={5} startDate={startDate} endDate={endDate} />
       </header>
     </div>
   );

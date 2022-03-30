@@ -16,4 +16,5 @@ const config = {
   }
 }
 
+// depending on the NODE_ENV env variable, the config will be different
 export const getConfig = env => config[env] || config.development;
